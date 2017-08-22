@@ -36,13 +36,21 @@ var twitter = require('twitter'),
 
 // var Spotify = require('node-spotify-api');
 // var searchSpotify = process.argv[2];
+// var queryUrl = "http://api.spotify.com/v1/search?q=" + searchSpotify + "&type=track,album,artist&limit=10&access_token=BQC69iUx57uKqyDC72OnWba9xBgA0n2QU--7omYXuhGgpRqAMSEH-3SFjLvhZhbG7ywZ_sq14JNgcRo5p5PadEQwdtVxaQ2NbFIEOM4mjWOURwFeD8DBMdkRFgSv6F6JbD_p3yxqVxI";
 
+
+// request(queryUrl, function(error, response, body) {
+
+// 	if(!error && response.statusCode === 200) {
+// 		console.log(JSON.parse(body).artists[1].name);
+// 	}
+// });
 // var spotify = new Spotify({
 // 	id: keys.spotifykeys.id,
 // 	secret: keys.spotifykeys.secret
 // });
 
-// spotify
+//spotify
 // 	.request('http://api.spotify.com/v1/search?q=' + searchSpotify + '&type=track,album,artist&limit=10')
 // 	.then(function(data) {
 // 		console.log(data);
@@ -50,6 +58,7 @@ var twitter = require('twitter'),
 // 	.catch(function(err) {
 // 		console.error('error occured: ' + err);
 // }) ;
+
 //show Artist
 
 //show the song's name
@@ -60,25 +69,28 @@ var twitter = require('twitter'),
 
 
 //movie-this
-var movie = process.argv[2];
-var apiKey = "40e9cece";
-var queryUrl ="http://www.omdbapi.com/?apikey=" + apiKey + "&t=" + movie + "&y=&plot=short";
+//**THIS WORKS**//
+// var movie = process.argv[2];
+// var apiKey = "40e9cece";
+// var queryUrl ="http://www.omdbapi.com/?apikey=" + apiKey + "&t=" + movie + "&y=&plot=short";
 
-console.log(queryUrl);
+// console.log(queryUrl);
 
-request(queryUrl, function(error, response, body) {
+// request(queryUrl, function(error, response, body) {
 
-	if (!error && response.statusCode === 200) {
+// 	if (!error && response.statusCode === 200) {
 
-		console.log(JSON.parse(body).Title);
-		console.log(JSON.parse(body).Year);
-		console.log(JSON.parse(body).imdbRating);
-		console.log(JSON.parse(body).Ratings[1].Value);
-		console.log(JSON.parse(body).Country);
-		console.log(JSON.parse(body).Plot);
-		console.log(JSON.parse(body).Actors);
-	}
-});
+// 		console.log(JSON.parse(body).Title);
+// 		console.log(JSON.parse(body).Year);
+// 		console.log(JSON.parse(body).imdbRating);
+// 		console.log(JSON.parse(body).Ratings[1].Value);
+// 		console.log(JSON.parse(body).Country);
+// 		console.log(JSON.parse(body).Plot);
+// 		console.log(JSON.parse(body).Actors);
+// 	}
+// });
+
+//**^^^THIS WORKS^^^**//
 
 
 //show title
