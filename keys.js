@@ -10,4 +10,5 @@ exports.twitterkeys = {
 exports.spotifykeys = {
 	id: "936a8be08f694cfd9d918de9f9b9ec58",
 	secret: "f5769cdf33f840ecb38958ac6964d195"
+	//access_token: "BQC69iUx57uKqyDC72OnWba9xBgA0n2QU--7omYXuhGgpRqAMSEH-3SFjLvhZhbG7ywZ_sq14JNgcRo5p5PadEQwdtVxaQ2NbFIEOM4mjWOURwFeD8DBMdkRFgSv6F6JbD_p3yxqVxI"
 }
