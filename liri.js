@@ -1,6 +1,6 @@
 
 var twitter = require('twitter'),
-	Spotify = require('spotify-web-api-node'),
+	Spotify = require('node-spotify-api'),
 	request = require('request'),
 	keys = require('./keys.js');
 
@@ -33,6 +33,22 @@ var twitter = require('twitter'),
 
 
 //spotify-this-song
+
+var spotify = new Spotify({
+	id: keys.spotifykeys.id,
+	secret: keys.spotifykeys.secret
+});
+
+spotify.search({type: 'track', query: 'Ether', limit: 1}, function( err, data) {
+	if(err) {
+		console.log('Error occured: ' + err);
+	}
+
+	console.log(data.tracks.items[0].name);
+	console.log(data.tracks.items[0].preview_url);
+	console.log(data.tracks.items[0].album.name);
+	
+});
 
 
 //show Artist

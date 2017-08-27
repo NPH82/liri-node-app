@@ -17,12 +17,8 @@
   },
   "homepage": "https://github.com/NPH82/liri-node-app#readme",
   "dependencies": {
-    "btoa": "^1.1.2",
-    "moment": "^2.18.1",
     "node-spotify-api": "^1.0.7",
     "request": "^2.81.0",
-    "spotify": "^0.3.0",
-    "spotify-web-api-node": "^2.4.0",
     "twitter": "^1.7.1"
   }
 }
