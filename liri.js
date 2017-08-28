@@ -19,30 +19,32 @@ for (var i = 3; i < nodeArgs.length; i++) {
 
 //do-what-it-says
 var doIt = function() {
-	fs.readFile("random.txt", "utf8", function (err, data) {
-		if(err) {
-			console.log(err);
-		}
-		console.log(data);
-		var divideAndConquer = data.split(',');
+    fs.readFile("random.txt", "utf8", function(err, data) {
+        if (err) {
+            console.log(err);
+        }
+        console.log(data);
+        var divideAndConquer = data.split(',');
 
-		action = divideAndConquer[0];
-		for(var i = 1; i < divideAndConquer.length; i++){
-			if(i > 2 && i < divideAndConquer.length) {
-			  inputValue = inputValue + '+' + divideAndConquer[i];
-		} else {
-			inputValue += divideAndConquer[i];
-		}
-		if(action === "spotify-this-song") {
-		spot();
-	} else if(action === "my-tweets") {
-		tweet();
-	} else if(action === "movie-this") {
-		movie();
-	}
+        action = divideAndConquer[0];
+        checkInputValue();
+        for (var i = 1; i < divideAndConquer.length; i++) {
+            if (i > 2 && i < divideAndConquer.length) {
+                inputValue = inputValue + '+' + divideAndConquer[i];
+            } else {
+                inputValue += divideAndConquer[i];
+            };
 
-	}
-});
+            if (action === "spotify-this-song") {
+                spot();
+            } else if (action === "my-tweets") {
+                tweet();
+            } else if (action === "movie-this") {
+                movie();
+            }
+
+        }
+    });
 };
 
 //my-tweets
@@ -60,6 +62,7 @@ var tweet = function() {
             for (var i = 0; i < tweets.length; i++) {
                 console.log(tweets[i].text);
                 console.log(tweets[i].created_at);
+                addTextFile();
             }
         }
     });
@@ -70,13 +73,13 @@ var tweet = function() {
 
 //spotify-this-song
 var spot = function() {
-	checkInputValue();
+    checkInputValue();
     var spotify = new Spotify({
         id: keys.spotifykeys.id,
         secret: keys.spotifykeys.secret
     });
 
-    spotify.search({ type: 'track,artist', query: inputValue, limit: 1}, function(err, data) {
+    spotify.search({ type: 'track,artist', query: inputValue, limit: 1 }, function(err, data) {
         if (err) {
             console.log('Error occured: ' + err);
         }
@@ -84,6 +87,7 @@ var spot = function() {
         console.log(data.tracks.items[0].name);
         console.log(data.tracks.items[0].preview_url);
         console.log(data.tracks.items[0].album.name);
+        addTextFile();
 
     });
 };
@@ -97,7 +101,7 @@ var spot = function() {
 
 //movie-this
 var movie = function() {
-	checkInputValue();
+    checkInputValue();
     var apiKey = "40e9cece";
     var queryUrl = "http://www.omdbapi.com/?apikey=" + apiKey + "&t=" + inputValue + "&y=&plot=short";
 
@@ -112,16 +116,17 @@ var movie = function() {
             console.log(JSON.parse(body).Country);
             console.log(JSON.parse(body).Plot);
             console.log(JSON.parse(body).Actors);
+            addTextFile();
         }
     });
 };
 
-var checkInputValue = function () {
-	if(inputValue === '' && action === 'movie-this') {
-		inputValue = 'Mr. Nobody';
-	} else if(inputValue === '' && action === 'spotify-this-song'){
-		inputValue = "Ace of Base";
-	}
+var checkInputValue = function() {
+    if (inputValue === '' && action === 'movie-this') {
+        inputValue = 'Mr. Nobody';
+    } else if (inputValue === '' && action === 'spotify-this-song') {
+        inputValue = "Ace of Base";
+    }
 };
 //show title
 //year movie came out
@@ -133,7 +138,13 @@ var checkInputValue = function () {
 //Actors
 //if no movie typed in, default to "Mr. Nobody"
 //API Key: 
-
+var addTextFile = function() {
+    fs.appendFile("log.txt", action + "," + inputValue + "\n", function(err) {
+        if (err) {
+            console.log(err);
+        }
+    });
+};
 
 //commands to understand:
 
@@ -151,10 +162,6 @@ switch (action) {
         break;
 
     case 'do-what-it-says':
-    doIt();
-    break;
+        doIt();
+        break;
 }
-
-
-
-
