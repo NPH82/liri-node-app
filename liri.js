@@ -1,8 +1,8 @@
 var twitter = require('twitter'),
     Spotify = require('node-spotify-api'),
     request = require('request'),
-    keys = require('./keys.js');
-
+    keys = require('./keys.js'),
+    fs = require('fs');
 
 //takes in actions and values
 var action = process.argv[2];
@@ -16,6 +16,34 @@ for (var i = 3; i < nodeArgs.length; i++) {
         inputValue += nodeArgs[i];
     }
 }
+
+//do-what-it-says
+var doIt = function() {
+	fs.readFile("random.txt", "utf8", function (err, data) {
+		if(err) {
+			console.log(err);
+		}
+		console.log(data);
+		var divideAndConquer = data.split(',');
+
+		action = divideAndConquer[0];
+		for(var i = 1; i < divideAndConquer.length; i++){
+			if(i > 2 && i < divideAndConquer.length) {
+			  inputValue = inputValue + '+' + divideAndConquer[i];
+		} else {
+			inputValue += divideAndConquer[i];
+		}
+		if(action === "spotify-this-song") {
+		spot();
+	} else if(action === "my-tweets") {
+		tweet();
+	} else if(action === "movie-this") {
+		movie();
+	}
+
+	}
+});
+};
 
 //my-tweets
 var tweet = function() {
@@ -106,7 +134,9 @@ var checkInputValue = function () {
 //if no movie typed in, default to "Mr. Nobody"
 //API Key: 
 
+
 //commands to understand:
+
 switch (action) {
     case 'my-tweets':
         tweet();
@@ -125,4 +155,6 @@ switch (action) {
     break;
 }
 
-//do-what-it-says
+
+
+
