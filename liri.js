@@ -1,58 +1,65 @@
-
 var twitter = require('twitter'),
-	Spotify = require('node-spotify-api'),
-	request = require('request'),
-	keys = require('./keys.js');
+    Spotify = require('node-spotify-api'),
+    request = require('request'),
+    keys = require('./keys.js');
 
 
-//commands to understand:
+//takes in actions and values
+var action = process.argv[2];
+var nodeArgs = process.argv;
+var inputValue = '';
+
+for (var i = 3; i < nodeArgs.length; i++) {
+    if (i > 3 && i < nodeArgs.length) {
+        inputValue = inputValue + '+' + nodeArgs[i];
+    } else {
+        inputValue += nodeArgs[i];
+    }
+}
 
 //my-tweets
-//**THIS WORKS**//
-// var client = new twitter({
-// 	"consumer_key": keys.twitterkeys.consumer_key,
-// 	"consumer_secret": keys.twitterkeys.consumer_secret,
-// 	"access_token_key": keys.twitterkeys.access_token_key,
-// 	"access_token_secret": keys.twitterkeys.access_token_secret
-// 	});
+var tweet = function() {
+    var client = new twitter({
+        "consumer_key": keys.twitterkeys.consumer_key,
+        "consumer_secret": keys.twitterkeys.consumer_secret,
+        "access_token_key": keys.twitterkeys.access_token_key,
+        "access_token_secret": keys.twitterkeys.access_token_secret
+    });
 
-// var params = {screen_name: 'jsciptmills'};
-// client.get('statuses/user_timeline', params, function(err, tweets, res) {
-// 	if(!err) {
-// 		for (var i = 0; i < tweets.length; i++) {
-// 		console.log(tweets[i].text);
-// 		console.log(tweets[i].created_at);
-// 		}
-// 	}
-// });
-//**^^THIS WORKS**//
-
+    var params = { screen_name: 'jsciptmills' };
+    client.get('statuses/user_timeline', params, function(err, tweets, res) {
+        if (!err) {
+            for (var i = 0; i < tweets.length; i++) {
+                console.log(tweets[i].text);
+                console.log(tweets[i].created_at);
+            }
+        }
+    });
+};
 //show last 2o tweets
 //show when they were createds
 
 
-
 //spotify-this-song
+var spot = function() {
+	checkInputValue();
+    var spotify = new Spotify({
+        id: keys.spotifykeys.id,
+        secret: keys.spotifykeys.secret
+    });
 
-var spotify = new Spotify({
-	id: keys.spotifykeys.id,
-	secret: keys.spotifykeys.secret
-});
+    spotify.search({ type: 'track,artist', query: inputValue, limit: 1}, function(err, data) {
+        if (err) {
+            console.log('Error occured: ' + err);
+        }
+        console.log(data.tracks.items[0].artists[0].name);
+        console.log(data.tracks.items[0].name);
+        console.log(data.tracks.items[0].preview_url);
+        console.log(data.tracks.items[0].album.name);
 
-spotify.search({type: 'track', query: 'Ether', limit: 1}, function( err, data) {
-	if(err) {
-		console.log('Error occured: ' + err);
-	}
-
-	console.log(data.tracks.items[0].name);
-	console.log(data.tracks.items[0].preview_url);
-	console.log(data.tracks.items[0].album.name);
-	
-});
-
-
+    });
+};
 //show Artist
-
 //show the song's name
 //A preview link of the song from Spotify
 //The album the song is from
@@ -61,30 +68,33 @@ spotify.search({type: 'track', query: 'Ether', limit: 1}, function( err, data) {
 
 
 //movie-this
-//**THIS WORKS**//
-// var movie = process.argv[2];
-// var apiKey = "40e9cece";
-// var queryUrl ="http://www.omdbapi.com/?apikey=" + apiKey + "&t=" + movie + "&y=&plot=short";
+var movie = function() {
+	checkInputValue();
+    var apiKey = "40e9cece";
+    var queryUrl = "http://www.omdbapi.com/?apikey=" + apiKey + "&t=" + inputValue + "&y=&plot=short";
 
-// console.log(queryUrl);
+    request(queryUrl, function(error, response, body) {
 
-// request(queryUrl, function(error, response, body) {
+        if (!error && response.statusCode === 200) {
 
-// 	if (!error && response.statusCode === 200) {
+            console.log(JSON.parse(body).Title);
+            console.log(JSON.parse(body).Year);
+            console.log(JSON.parse(body).imdbRating);
+            console.log(JSON.parse(body).Ratings[1].Value);
+            console.log(JSON.parse(body).Country);
+            console.log(JSON.parse(body).Plot);
+            console.log(JSON.parse(body).Actors);
+        }
+    });
+};
 
-// 		console.log(JSON.parse(body).Title);
-// 		console.log(JSON.parse(body).Year);
-// 		console.log(JSON.parse(body).imdbRating);
-// 		console.log(JSON.parse(body).Ratings[1].Value);
-// 		console.log(JSON.parse(body).Country);
-// 		console.log(JSON.parse(body).Plot);
-// 		console.log(JSON.parse(body).Actors);
-// 	}
-// });
-
-//**^^^THIS WORKS^^^**//
-
-
+var checkInputValue = function () {
+	if(inputValue === '' && action === 'movie-this') {
+		inputValue = 'Mr. Nobody';
+	} else if(inputValue === '' && action === 'spotify-this-song'){
+		inputValue = "Ace of Base";
+	}
+};
 //show title
 //year movie came out
 //IMDB rating
@@ -96,5 +106,23 @@ spotify.search({type: 'track', query: 'Ether', limit: 1}, function( err, data) {
 //if no movie typed in, default to "Mr. Nobody"
 //API Key: 
 
+//commands to understand:
+switch (action) {
+    case 'my-tweets':
+        tweet();
+        break;
+
+    case 'spotify-this-song':
+        spot();
+        break;
+
+    case 'movie-this':
+        movie();
+        break;
+
+    case 'do-what-it-says':
+    doIt();
+    break;
+}
 
 //do-what-it-says
