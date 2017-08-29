@@ -75,7 +75,6 @@ var tweet = function() {
 //spotify-this-song
 var spot = function() {
     checkInputValue();
-    console.log(inputValue);
     var spotify = new Spotify({
         id: keys.spotifykeys.id,
         secret: keys.spotifykeys.secret
@@ -104,8 +103,6 @@ var spot = function() {
 var movie = function() {
     checkInputValue();
     var apiKey = keys.imdbkeys.key;
-    console.log(apiKey);
-    console.log(inputValue);
     var queryUrl = "http://www.omdbapi.com/?apikey=" + apiKey + "&t=" + inputValue + "&y=&plot=short";
 
     request(queryUrl, function(error, response, body) {
