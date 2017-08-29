@@ -55,7 +55,7 @@ var tweet = function() {
         "access_token_secret": keys.twitterkeys.access_token_secret
     });
 
-    var params = { screen_name: 'jsciptmills' };
+    var params = { screen_name: 'jsciptmills', count: 20 };
     client.get('statuses/user_timeline', params, function(err, tweets, res) {
         if (!err) {
             for (var i = 0; i < tweets.length; i++) {
