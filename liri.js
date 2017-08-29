@@ -23,7 +23,6 @@ var doIt = function() {
         if (err) {
             console.log(err);
         }
-        console.log(data);
         var divideAndConquer = data.split(',');
 
         action = divideAndConquer[0];
@@ -60,20 +59,23 @@ var tweet = function() {
     client.get('statuses/user_timeline', params, function(err, tweets, res) {
         if (!err) {
             for (var i = 0; i < tweets.length; i++) {
-                console.log(tweets[i].text);
-                console.log(tweets[i].created_at);
+                console.log("======================================================================");
+                //show last 2o tweets
+                console.log("Tweet: " + tweets[i].text);
+                //show when they were createds
+                console.log("Date created: " + tweets[i].created_at);
+                console.log("======================================================================");
                 addTextFile();
             }
         }
     });
 };
-//show last 2o tweets
-//show when they were createds
 
 
 //spotify-this-song
 var spot = function() {
     checkInputValue();
+    console.log(inputValue);
     var spotify = new Spotify({
         id: keys.spotifykeys.id,
         secret: keys.spotifykeys.secret
@@ -83,63 +85,66 @@ var spot = function() {
         if (err) {
             console.log('Error occured: ' + err);
         }
-        console.log(data.tracks.items[0].artists[0].name);
-        console.log(data.tracks.items[0].name);
-        console.log(data.tracks.items[0].preview_url);
-        console.log(data.tracks.items[0].album.name);
+        console.log("======================================================================");
+        //show Artist
+        console.log("Artist: " + data.tracks.items[0].artists[0].name);
+        //show the song's name
+        console.log("Song title: " + data.tracks.items[0].name);
+        //A preview link of the song from Spotify
+        console.log("Preview link: " + data.tracks.items[0].preview_url);
+        //The album the song is from
+        console.log("Album title: " + data.tracks.items[0].album.name);
+        console.log("======================================================================");
         addTextFile();
 
     });
 };
-//show Artist
-//show the song's name
-//A preview link of the song from Spotify
-//The album the song is from
-//If no song shown, Default to "the Sign" Ace of Base
-
-
 
 //movie-this
 var movie = function() {
     checkInputValue();
-    var apiKey = "40e9cece";
+    var apiKey = keys.imdbkeys.key;
+    console.log(apiKey);
+    console.log(inputValue);
     var queryUrl = "http://www.omdbapi.com/?apikey=" + apiKey + "&t=" + inputValue + "&y=&plot=short";
 
     request(queryUrl, function(error, response, body) {
-
         if (!error && response.statusCode === 200) {
-
-            console.log(JSON.parse(body).Title);
-            console.log(JSON.parse(body).Year);
-            console.log(JSON.parse(body).imdbRating);
-            console.log(JSON.parse(body).Ratings[1].Value);
-            console.log(JSON.parse(body).Country);
-            console.log(JSON.parse(body).Plot);
-            console.log(JSON.parse(body).Actors);
+            console.log("======================================================================");
+            //show title
+            console.log("Movie title: " + JSON.parse(body).Title);
+            //year movie came out
+            console.log("Movie released in: " + JSON.parse(body).Year);
+            //IMDB rating
+            console.log("IMDB Rating: " + JSON.parse(body).imdbRating);
+            //Rotten tomatoes Rating
+            console.log("Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[1].Value);
+            //Country where movie was produced
+            console.log("Movie was produced in: " + JSON.parse(body).Country);
+            //Plot of movie
+            console.log("Plot: " + JSON.parse(body).Plot);
+            //Actors
+            console.log("Actors: " + JSON.parse(body).Actors);
+            console.log("======================================================================");
             addTextFile();
         }
     });
 };
 
+//Check to see if there is an input DEFAULT actions
 var checkInputValue = function() {
+
     if (inputValue === '' && action === 'movie-this') {
         inputValue = 'Mr. Nobody';
+
     } else if (inputValue === '' && action === 'spotify-this-song') {
-        inputValue = "Ace of Base";
+        inputValue = 'Ace of Base';
+
     }
 };
-//show title
-//year movie came out
-//IMDB rating
-//Rotten tomatoes Rating
-//Country where movie was produced
-//Language of Movie
-//Plot of movie
-//Actors
-//if no movie typed in, default to "Mr. Nobody"
-//API Key: 
+//****BONUS appending to file
 var addTextFile = function() {
-    fs.appendFile("log.txt", action + "," + inputValue + "\n", function(err) {
+    fs.appendFile('log.txt', action + "," + "'" + inputValue.replace(/\+/g, ' ') + "'" + "\n", function(err) {
         if (err) {
             console.log(err);
         }
@@ -164,4 +169,4 @@ switch (action) {
     case 'do-what-it-says':
         doIt();
         break;
-}
+};
