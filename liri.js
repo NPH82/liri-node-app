@@ -3,6 +3,7 @@ var twitter = require('twitter'),
     request = require('request'),
     keys = require('./keys.js'),
     fs = require('fs');
+    opn = require('opn');
 
 //takes in actions and values
 var action = process.argv[2];
@@ -94,6 +95,7 @@ var spot = function() {
         //The album the song is from
         console.log("Album title: " + data.tracks.items[0].album.name);
         console.log("======================================================================");
+        opn(data.tracks.items[0].preview_url);
         addTextFile();
 
     });
